@@ -14,6 +14,8 @@
     <string name="setBatteryIconHeightScale_title">Définir le facteur d\'échelle de hauteur de l\'icône de batterie</string>
     <string name="hideBatteryPercentageSign_title">Masquer le symbole de pourcentage de la batterie</string>
     <string name="hideBatteryPercentageSign_summary" formatted="false">Supprimer uniquement le symbole %, conserver les chiffres</string>
+    <string name="hideBatteryIcon_title">Masquer l\'icône de batterie</string>
+    <string name="hideBatteryIcon_summary">Masque l\'icône de batterie tout en affichant l\'icône de charge lorsque l\'appareil est branché. N\'affecte pas le pourcentage de batterie</string>
     <string name="supportRealTimeNetworkSpeed_title">Afficher la vitesse du réseau en temps réel</string>
     <string name="supportRealTimeNetworkSpeed_summary">Paramètres -> Notifications -> Paramètres avancés -> Afficher la vitesse du réseau</string>
     <string name="showSeparateUpDownNetworkSpeeds_title">Afficher les vitesses d\'envoi/téléchargement (Barre d\'état)</string>
