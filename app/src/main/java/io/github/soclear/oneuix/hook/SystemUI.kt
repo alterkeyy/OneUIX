@@ -50,7 +50,9 @@ object SystemUI {
     }
 
     fun setStatusBarPaddingDp(loadPackageParam: LoadPackageParam, left: Float?, right: Float?) {
-        if (loadPackageParam.packageName != Package.SYSTEMUI) {
+        if (loadPackageParam.packageName != Package.SYSTEMUI ||
+            left == null && right == null
+        ) {
             return
         }
         try {
