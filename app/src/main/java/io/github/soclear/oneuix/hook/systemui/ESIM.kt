@@ -10,6 +10,7 @@ import android.view.View
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
+import de.robv.android.xposed.XposedBridge.hookAllMethods
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.XposedHelpers.findClass
@@ -68,15 +69,12 @@ object ESIM {
         val selectedSlots = selectedPhysicalEsimAdapterSlots(simSlotMode)
 
         try {
-            findAndHookMethod(
-                "com.android.systemui.statusbar.pipeline.mobile.ui.view.ModernStatusBarMobileView",
-                loadPackageParam.classLoader,
+            hookAllMethods(
+                findClass(
+                    "com.android.systemui.statusbar.pipeline.mobile.ui.view.ModernStatusBarMobileView",
+                    loadPackageParam.classLoader
+                ),
                 "constructAndBind",
-                Context::class.java,
-                "com.android.systemui.statusbar.pipeline.mobile.ui.MobileViewLogger",
-                String::class.java,
-                "com.android.systemui.statusbar.pipeline.mobile.ui.viewmodel.LocationBasedMobileViewModel",
-                "com.android.systemui.statusbar.policy.ConfigurationController",
                 object : XC_MethodHook() {
                     override fun afterHookedMethod(param: MethodHookParam) {
                         val context = param.args[0] as? Context
@@ -138,6 +136,7 @@ object ESIM {
             XposedBridge.log(t)
         }
 
+        // TODO: ClassNotFoundException
         try {
             findAndHookMethod(
                 "com.android.systemui.statusbar.StatusBarMobileView",
