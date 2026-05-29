@@ -65,6 +65,7 @@ data class Preference(
             val hideQsBarMediaPlayer: Boolean = false,
             val hideQsBarNearbyDevicesAndDeviceControl: Boolean = false,
             val hideQsBarSecurityFooter: Boolean = false,
+            val hideQsBarDataUsage: Boolean = false,
             val hideQsBarSmartViewAndModes: Boolean = false,
             val alwaysExpandQsTileChunk: Boolean = false,
             val alwaysShowTimeDateOnQs: Boolean = false,

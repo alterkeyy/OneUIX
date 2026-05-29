@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
-import android.os.SystemProperties
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -39,6 +38,7 @@ import de.robv.android.xposed.XposedHelpers.setIntField
 import de.robv.android.xposed.XposedHelpers.setObjectField
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
+import io.github.soclear.oneuix.data.ONE_UI_VERSION
 import io.github.soclear.oneuix.data.Package
 import io.github.soclear.oneuix.hook.util.TraditionalChineseCalendar
 import java.time.LocalDateTime
@@ -51,6 +51,7 @@ object SystemUI {
         MediaPlayer,
         NearbyDevicesAndDeviceControl,
         SecurityFooter,
+        DataUsage,
         SmartViewAndModes,
     }
 
@@ -339,7 +340,7 @@ object SystemUI {
             }
         }
 
-        if (QsBar.NearbyDevicesAndDeviceControl in qsBarSet) {
+        if (QsBar.NearbyDevicesAndDeviceControl in qsBarSet && ONE_UI_VERSION < 80500) {
             try {
                 if (loadPackageParam.appInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
                     findAndHookMethod(
@@ -372,7 +373,7 @@ object SystemUI {
             }
         }
 
-        if (QsBar.MediaPlayer in qsBarSet) {
+        if (QsBar.MediaPlayer in qsBarSet && ONE_UI_VERSION < 80500) {
             try {
                 findAndHookMethod(
                     "com.android.systemui.qs.bar.QSMediaPlayerBar",
@@ -388,7 +389,24 @@ object SystemUI {
 
         if (QsBar.SecurityFooter in qsBarSet) {
             try {
-                if (loadPackageParam.appInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
+                if (ONE_UI_VERSION >= 80500) {
+                    findClassIfExists(
+                        $$"com.android.systemui.samsung.quicksetting.ui.banner.BottomBannerViewModel$1$1",
+                        loadPackageParam.classLoader
+                    )?.let { bottomBannerTransformClass ->
+                        hookAllMethods(
+                            bottomBannerTransformClass,
+                            "invoke",
+                            object : XC_MethodHook() {
+                                override fun beforeHookedMethod(param: MethodHookParam) {
+                                    if (param.args.getOrNull(1) is Boolean) {
+                                        param.args[1] = false
+                                    }
+                                }
+                            }
+                        )
+                    }
+                } else if (loadPackageParam.appInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
                     findAndHookMethod(
                         "com.android.systemui.qs.bar.BarItemImpl",
                         loadPackageParam.classLoader,
@@ -435,7 +453,39 @@ object SystemUI {
             }
         }
 
-        if (QsBar.SmartViewAndModes in qsBarSet) {
+        if (QsBar.DataUsage in qsBarSet) {
+            try {
+                if (ONE_UI_VERSION >= 80500) {
+                    findClassIfExists(
+                        $$"com.android.systemui.samsung.quicksetting.ui.banner.BottomBannerViewModel$1$1",
+                        loadPackageParam.classLoader
+                    )?.let { bottomBannerTransformClass ->
+                        hookAllMethods(
+                            bottomBannerTransformClass,
+                            "invoke",
+                            object : XC_MethodHook() {
+                                override fun beforeHookedMethod(param: MethodHookParam) {
+                                    if (param.args.getOrNull(2) is Boolean) {
+                                        param.args[2] = false
+                                    }
+                                }
+                            }
+                        )
+                    }
+                } else {
+                    findAndHookMethod(
+                        "com.android.systemui.qs.bar.DataUsageBar",
+                        loadPackageParam.classLoader,
+                        "isAvailable",
+                        returnConstant(false)
+                    )
+                }
+            } catch (t: Throwable) {
+                XposedBridge.log(t)
+            }
+        }
+
+        if (QsBar.SmartViewAndModes in qsBarSet && ONE_UI_VERSION < 80500) {
             try {
                 findAndHookMethod(
                     "com.android.systemui.qs.bar.BarItemImpl",
@@ -458,6 +508,7 @@ object SystemUI {
 
         // 横屏
         try {
+            if (ONE_UI_VERSION >= 80500) return
             val nearbyDevicesAndDeviceControl = QsBar.NearbyDevicesAndDeviceControl in qsBarSet
             val smartViewAndModes = QsBar.SmartViewAndModes in qsBarSet
             if (!nearbyDevicesAndDeviceControl && !smartViewAndModes) {
@@ -493,7 +544,8 @@ object SystemUI {
 
     fun alwaysExpandQsTileChunk(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.SYSTEMUI ||
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM ||
+            ONE_UI_VERSION >= 80500
         ) return
         try {
             findAndHookMethod(
@@ -535,7 +587,8 @@ object SystemUI {
 
     fun alwaysShowTimeDateOnQs(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.SYSTEMUI ||
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM ||
+            ONE_UI_VERSION >= 80500
         ) return
         try {
             // 单独
@@ -744,8 +797,7 @@ object SystemUI {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
         ) return
 
-        val oneUiOwnVersion = SystemProperties.getInt("ro.build.version.oneui", 0)
-        if (oneUiOwnVersion >= 80500) {
+        if (ONE_UI_VERSION >= 80500) {
             try {
                 findAndHookMethod(
                     "com.android.systemui.statusbar.phone.NotificationIconContainer",
@@ -926,7 +978,8 @@ object SystemUI {
 
     fun addVolumeProgressToQsBar(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.SYSTEMUI ||
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM ||
+            ONE_UI_VERSION >= 80500
         ) return
         var textView: TextView? = null
 
@@ -988,7 +1041,8 @@ object SystemUI {
 
     fun addBrightnessProgressToQsBar(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.SYSTEMUI ||
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM ||
+            ONE_UI_VERSION >= 80500
         ) return
         val textViewList = mutableListOf<TextView>()
 

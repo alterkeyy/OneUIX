@@ -37,6 +37,7 @@
     <string name="hideQsBarMediaPlayer_title">Скрыть медиаплеер в панели быстрых настроек</string>
     <string name="hideQsBarSecurityFooter_title">Скрыть панель безопасности в быстрых настройках</string>
     <string name="hideQsBarSecurityFooter_summary">Например: «Ваши личные приложения подключены к интернету через VPN»</string>
+    <string name="hideQsBarDataUsage_title">Скрыть панель использования данных в быстрых настройках</string>
     <string name="hideQsBarSmartViewAndModes_title">Скрыть Smart View и Режимы в панели быстрых настроек</string>
     <string name="hideDeviceControlQsTile_title">Скрыть «Управление устройством» в быстрых настройках</string>
     <string name="hideSmartViewQsTile_title">Скрыть Smart View в быстрых настройках</string>

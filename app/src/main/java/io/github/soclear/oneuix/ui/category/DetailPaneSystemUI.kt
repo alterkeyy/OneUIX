@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.soclear.oneuix.R
+import io.github.soclear.oneuix.data.ONE_UI_VERSION
 import io.github.soclear.oneuix.data.Preference
 import io.github.soclear.oneuix.data.PowerMenuAction
 import io.github.soclear.oneuix.ui.SettingViewModel
@@ -514,22 +515,26 @@ fun DetailPaneSystemUI(
                 },
                 supportingContent = { Text(stringResource(id = R.string.root5gQsTile_summary)) }
             )
-            SwitchItem(
-                icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
-                title = stringResource(id = R.string.hideQsBarMediaPlayer_title),
-                checked = uiState.qs.hideQsBarMediaPlayer,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.HideQsBarMediaPlayer(it))
-                }
-            )
-            SwitchItem(
-                icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
-                title = stringResource(id = R.string.hideQsBarNearbyDevicesAndDeviceControl_title),
-                checked = uiState.qs.hideQsBarNearbyDevicesAndDeviceControl,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.HideQsBarNearbyDevicesAndDeviceControl(it))
-                }
-            )
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
+                    title = stringResource(id = R.string.hideQsBarMediaPlayer_title),
+                    checked = uiState.qs.hideQsBarMediaPlayer,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.HideQsBarMediaPlayer(it))
+                    }
+                )
+            }
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
+                    title = stringResource(id = R.string.hideQsBarNearbyDevicesAndDeviceControl_title),
+                    checked = uiState.qs.hideQsBarNearbyDevicesAndDeviceControl,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.HideQsBarNearbyDevicesAndDeviceControl(it))
+                    }
+                )
+            }
             SwitchItem(
                 icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
                 title = stringResource(id = R.string.hideQsBarSecurityFooter_title),
@@ -541,44 +546,62 @@ fun DetailPaneSystemUI(
             )
             SwitchItem(
                 icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
-                title = stringResource(id = R.string.hideQsBarSmartViewAndModes_title),
-                checked = uiState.qs.hideQsBarSmartViewAndModes,
+                title = stringResource(id = R.string.hideQsBarDataUsage_title),
+                checked = uiState.qs.hideQsBarDataUsage,
                 onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.HideQsBarSmartViewAndModes(it))
+                    onEvent(SystemUIEvent.QS.HideQsBarDataUsage(it))
                 }
             )
-            SwitchItem(
-                icon = ImageVector.vectorResource(id = R.drawable.expand),
-                title = stringResource(id = R.string.alwaysExpandQsTileChunk_title),
-                checked = uiState.qs.alwaysExpandQsTileChunk,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.AlwaysExpandQsTileChunk(it))
-                }
-            )
-            SwitchItem(
-                title = stringResource(id = R.string.alwaysShowTimeDateOnQs_title),
-                icon = ImageVector.vectorResource(id = R.drawable.nest_clock_farsight_digital),
-                checked = uiState.qs.alwaysShowTimeDateOnQs,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.AlwaysShowTimeDateOnQs(it))
-                }
-            )
-            SwitchItem(
-                icon = ImageVector.vectorResource(id = R.drawable.light_mode),
-                title = stringResource(id = R.string.addBrightnessProgressToQsBar_title),
-                checked = uiState.qs.addBrightnessProgressToQsBar,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.AddBrightnessProgressToQsBar(it))
-                }
-            )
-            SwitchItem(
-                icon = ImageVector.vectorResource(id = R.drawable.music_note),
-                title = stringResource(id = R.string.addVolumeProgressToQsBar_title),
-                checked = uiState.qs.addVolumeProgressToQsBar,
-                onCheckedChange = {
-                    onEvent(SystemUIEvent.QS.AddVolumeProgressToQsBar(it))
-                }
-            )
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.tile_medium),
+                    title = stringResource(id = R.string.hideQsBarSmartViewAndModes_title),
+                    checked = uiState.qs.hideQsBarSmartViewAndModes,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.HideQsBarSmartViewAndModes(it))
+                    }
+                )
+            }
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.expand),
+                    title = stringResource(id = R.string.alwaysExpandQsTileChunk_title),
+                    checked = uiState.qs.alwaysExpandQsTileChunk,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.AlwaysExpandQsTileChunk(it))
+                    }
+                )
+            }
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    title = stringResource(id = R.string.alwaysShowTimeDateOnQs_title),
+                    icon = ImageVector.vectorResource(id = R.drawable.nest_clock_farsight_digital),
+                    checked = uiState.qs.alwaysShowTimeDateOnQs,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.AlwaysShowTimeDateOnQs(it))
+                    }
+                )
+            }
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.light_mode),
+                    title = stringResource(id = R.string.addBrightnessProgressToQsBar_title),
+                    checked = uiState.qs.addBrightnessProgressToQsBar,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.AddBrightnessProgressToQsBar(it))
+                    }
+                )
+            }
+            if (ONE_UI_VERSION < 80500) {
+                SwitchItem(
+                    icon = ImageVector.vectorResource(id = R.drawable.music_note),
+                    title = stringResource(id = R.string.addVolumeProgressToQsBar_title),
+                    checked = uiState.qs.addVolumeProgressToQsBar,
+                    onCheckedChange = {
+                        onEvent(SystemUIEvent.QS.AddVolumeProgressToQsBar(it))
+                    }
+                )
+            }
             SwitchItem(
                 icon = ImageVector.vectorResource(id = R.drawable.today),
                 title = stringResource(id = R.string.showTraditionalChineseDateOnQS_title),
@@ -701,7 +724,10 @@ private fun PowerMenuActionEditor(
                 supportingContent = {
                     Text(
                         text = if (action.visible) {
-                            stringResource(id = R.string.powerMenuActionVisible_summary, visiblePosition)
+                            stringResource(
+                                id = R.string.powerMenuActionVisible_summary,
+                                visiblePosition
+                            )
                         } else {
                             stringResource(id = R.string.powerMenuActionHidden_summary)
                         }
@@ -861,6 +887,9 @@ sealed interface SystemUIEvent {
 
         @JvmInline
         value class HideQsBarSecurityFooter(val value: Boolean) : QS
+
+        @JvmInline
+        value class HideQsBarDataUsage(val value: Boolean) : QS
 
         @JvmInline
         value class HideQsBarSmartViewAndModes(val value: Boolean) : QS
@@ -1234,6 +1263,16 @@ private fun SettingViewModel.onQSEvent(event: SystemUIEvent.QS) {
                     systemUI = preference.systemUI.copy(
                         qs = preference.systemUI.qs.copy(
                             hideQsBarSecurityFooter = event.value
+                        )
+                    )
+                )
+            }
+
+            is SystemUIEvent.QS.HideQsBarDataUsage -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        qs = preference.systemUI.qs.copy(
+                            hideQsBarDataUsage = event.value
                         )
                     )
                 )

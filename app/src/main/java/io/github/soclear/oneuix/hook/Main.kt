@@ -313,6 +313,9 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                         if (preference.systemUI.qs.hideQsBarSecurityFooter) {
                             add(SystemUI.QsBar.SecurityFooter)
                         }
+                        if (preference.systemUI.qs.hideQsBarDataUsage) {
+                            add(SystemUI.QsBar.DataUsage)
+                        }
                         if (preference.systemUI.qs.hideQsBarSmartViewAndModes) {
                             add(SystemUI.QsBar.SmartViewAndModes)
                         }
