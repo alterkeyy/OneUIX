@@ -67,6 +67,7 @@
     <string name="powerMenuAction_lockDownMode">Lockdown mode</string>
     <string name="powerMenuAction_emergencyCall">Emergency call</string>
     <string name="powerMenuAction_medicalInfo">Medical info</string>
+    <string name="powerMenuAction_forceRestartMessage">Force restart message</string>
     <string name="showPackageInfo_title">Show package info on App Info page</string>
     <string name="showPackageInfo_summary">Long press or double tap to copy</string>
     <string name="makeAllUserAppsAvailable_title">Make all user apps available for app cloning</string>

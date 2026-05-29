@@ -67,6 +67,7 @@
     <string name="powerMenuAction_lockDownMode">锁定模式</string>
     <string name="powerMenuAction_emergencyCall">紧急呼叫</string>
     <string name="powerMenuAction_medicalInfo">医疗信息</string>
+    <string name="powerMenuAction_forceRestartMessage">强制重启提示</string>
     <string name="showPackageInfo_title">应用程序信息页面显示包信息</string>
     <string name="showPackageInfo_summary">长按或双击可复制</string>
     <string name="makeAllUserAppsAvailable_title">应用分身支持所有用户应用</string>

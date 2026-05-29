@@ -67,6 +67,7 @@
     <string name="powerMenuAction_lockDownMode">Mode verrouillage</string>
     <string name="powerMenuAction_emergencyCall">Appel d\'urgence</string>
     <string name="powerMenuAction_medicalInfo">Informations médicales</string>
+    <string name="powerMenuAction_forceRestartMessage">Message de redémarrage forcé</string>
     <string name="showPackageInfo_title">Afficher les infos du paquet sur la page infos de l\'application</string>
     <string name="showPackageInfo_summary">Appui long ou double-clic pour copier</string>
     <string name="makeAllUserAppsAvailable_title">Messagerie double (Dual Messenger) pour toutes les applications</string>
