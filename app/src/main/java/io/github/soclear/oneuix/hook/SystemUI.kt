@@ -32,6 +32,7 @@ import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findAndHookConstructor
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.XposedHelpers.findClass
+import de.robv.android.xposed.XposedHelpers.findClassIfExists
 import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.XposedHelpers.setIntField
@@ -97,7 +98,11 @@ object SystemUI {
         }
     }
 
-    fun setBatteryIconScale(loadPackageParam: LoadPackageParam, widthScale: Float?, heightScale: Float?) {
+    fun setBatteryIconScale(
+        loadPackageParam: LoadPackageParam,
+        widthScale: Float?,
+        heightScale: Float?
+    ) {
         if (loadPackageParam.packageName != Package.SYSTEMUI || widthScale == null && heightScale == null) return
         try {
             findAndHookMethod(
@@ -106,7 +111,8 @@ object SystemUI {
                 "scaleBatteryMeterViewsLegacy",
                 object : XC_MethodHook() {
                     override fun afterHookedMethod(param: MethodHookParam) {
-                        val mBatteryIconView = getObjectField(param.thisObject, "mBatteryIconView") as ImageView
+                        val mBatteryIconView =
+                            getObjectField(param.thisObject, "mBatteryIconView") as ImageView
                         mBatteryIconView.layoutParams = mBatteryIconView.layoutParams.apply {
                             if (widthScale != null) {
                                 width = (width * widthScale).roundToInt()
@@ -195,8 +201,16 @@ object SystemUI {
                 outdoorContainer.tag = outdoorModeRowTag()
 
                 val res = context.resources
-                val titleId = res.getIdentifier("sec_brightness_outdoor_mode_title", "string", Package.SYSTEMUI)
-                val summaryId = res.getIdentifier("sec_brightness_outdoor_mode_summary", "string", Package.SYSTEMUI)
+                val titleId = res.getIdentifier(
+                    "sec_brightness_outdoor_mode_title",
+                    "string",
+                    Package.SYSTEMUI
+                )
+                val summaryId = res.getIdentifier(
+                    "sec_brightness_outdoor_mode_summary",
+                    "string",
+                    Package.SYSTEMUI
+                )
                 val titleViewId = res.getIdentifier("title", "id", Package.SYSTEMUI)
                 val summaryViewId = res.getIdentifier("title_summary", "id", Package.SYSTEMUI)
                 val switchViewId = res.getIdentifier("title_switch", "id", Package.SYSTEMUI)
@@ -233,22 +247,29 @@ object SystemUI {
                 "com.android.systemui.qs.SecQSSwitchPreference",
                 loadPackageParam.classLoader
             )
-            findAndHookMethod(
+            (findClassIfExists(
+                "com.android.systemui.settings.brightness.BrightnessDetailAdapter",
+                loadPackageParam.classLoader
+            ) ?: findClassIfExists(
                 $$"com.android.systemui.settings.brightness.BrightnessDetail$1",
-                loadPackageParam.classLoader,
-                "createDetailView",
-                Context::class.java,
-                View::class.java,
-                ViewGroup::class.java,
-                object : XC_MethodHook() {
-                    override fun afterHookedMethod(param: MethodHookParam) {
-                        val detailView = param.result as? ViewGroup ?: return
-                        if (detailView.findViewWithTag<View>(outdoorModeRowTag()) != null) return
-                        val context = param.args[0] as Context
-                        addOutdoorModeRow(context, detailView, switchPreferenceClass)
+                loadPackageParam.classLoader
+            ))?.let { brightnessDetailClass ->
+                findAndHookMethod(
+                    brightnessDetailClass,
+                    "createDetailView",
+                    Context::class.java,
+                    View::class.java,
+                    ViewGroup::class.java,
+                    object : XC_MethodHook() {
+                        override fun afterHookedMethod(param: MethodHookParam) {
+                            val detailView = param.result as? ViewGroup ?: return
+                            if (detailView.findViewWithTag<View>(outdoorModeRowTag()) != null) return
+                            val context = param.args[0] as Context
+                            addOutdoorModeRow(context, detailView, switchPreferenceClass)
+                        }
                     }
-                }
-            )
+                )
+            }
         } catch (t: Throwable) {
             XposedBridge.log(t)
         }
@@ -1097,8 +1118,11 @@ object SystemUI {
         if (loadPackageParam.packageName != Package.SYSTEMUI) return
         try {
             findAndHookMethod(
-                "com.android.keyguard.CarrierTextManager", loadPackageParam.classLoader, "postToCallback",
-                $$"com.android.keyguard.CarrierTextManager$CarrierTextCallbackInfo", object : XC_MethodHook() {
+                "com.android.keyguard.CarrierTextManager",
+                loadPackageParam.classLoader,
+                "postToCallback",
+                $$"com.android.keyguard.CarrierTextManager$CarrierTextCallbackInfo",
+                object : XC_MethodHook() {
                     override fun beforeHookedMethod(param: MethodHookParam) {
                         try {
                             val carrierTextCallbackInfo = param.args[0] ?: return
