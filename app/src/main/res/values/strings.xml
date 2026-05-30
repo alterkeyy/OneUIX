@@ -49,6 +49,8 @@
     <string name="showWiFiLinkSpeed_summary">Format is Tx, Rx in Mbps</string>
     <string name="showMorePlaybackSpeeds_title">Add 3.0x and 4.0x playback speeds to video player</string>
     <string name="showMorePlaybackSpeeds_summary">Includes local video player and built-in browser player</string>
+    <string name="redirect_custom_tab_title">Force links to open in external Samsung Internet</string>
+    <string name="redirect_custom_tab_summary">When Samsung Internet is set as the default browser, many apps open links in a limited in-app Samsung Internet Custom Tab. Enable this to force links out of the app and open them in the full Samsung Internet browser.</string>
     <string name="blockGalaxyStoreAds_title">Remove ads in Galaxy Store</string>
     <string name="blockGalaxyStoreAds_summary">Remove splash screen ads, recommended ads/pop-ups, and installation age restriction pop-ups</string>
     <string name="supportAllCameraMenu_title">Show all camera menus</string>

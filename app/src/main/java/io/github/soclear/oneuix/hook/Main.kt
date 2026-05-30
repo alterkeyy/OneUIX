@@ -57,6 +57,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.other.spoofBrowserCountryCodeToUS) {
                     Browser.setCountryIsoCode(lpparam, "US")
                 }
+
+                if (preference.other.redirectCustomTab) {
+                    Browser.redirectCustomTab(lpparam)
+                }
             }
 
             Package.CALENDAR -> {

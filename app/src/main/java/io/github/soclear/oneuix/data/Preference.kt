@@ -125,6 +125,7 @@ data class Preference(
         val setWeatherProviderCN: Boolean = false,
         val showMemoryUsageInRecents: Boolean = false,
         val showMorePlaybackSpeeds: Boolean = false,
+        val redirectCustomTab: Boolean = false,
         val supportAllGallerySettings: Boolean = true,
         val supportAllNotesFeatures: Boolean = true,
         val enableChineseHolidayDisplay: Boolean = false,

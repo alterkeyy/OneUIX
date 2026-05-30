@@ -64,6 +64,13 @@ fun DetailPaneOther(
             onCheckedChange = { onEvent(OtherEvent.ShowMorePlaybackSpeeds(it)) }
         )
         SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.tab_move),
+            title = stringResource(id = R.string.redirect_custom_tab_title),
+            summary = stringResource(id = R.string.redirect_custom_tab_summary),
+            checked = uiState.redirectCustomTab,
+            onCheckedChange = { onEvent(OtherEvent.RedirectCustomTab(it)) }
+        )
+        SwitchItem(
             icon = ImageVector.vectorResource(id = R.drawable.photo_library),
             title = stringResource(id = R.string.supportAllGallerySettings_title),
             summary = stringResource(id = R.string.supportAllGallerySettings_summary),
@@ -184,6 +191,9 @@ sealed interface OtherEvent {
     value class ShowMorePlaybackSpeeds(val value: Boolean) : OtherEvent
 
     @JvmInline
+    value class RedirectCustomTab(val value: Boolean) : OtherEvent
+
+    @JvmInline
     value class SupportAllGallerySettings(val value: Boolean) : OtherEvent
 
     @JvmInline
@@ -256,6 +266,12 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.ShowMorePlaybackSpeeds -> preference.copy(
                 other = preference.other.copy(
                     showMorePlaybackSpeeds = event.value
+                )
+            )
+
+            is OtherEvent.RedirectCustomTab -> preference.copy(
+                other = preference.other.copy(
+                    redirectCustomTab = event.value
                 )
             )
 
