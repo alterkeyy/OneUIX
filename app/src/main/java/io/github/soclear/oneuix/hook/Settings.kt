@@ -15,6 +15,7 @@ import de.robv.android.xposed.XposedHelpers.findMethodExactIfExists
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.Package
+import kotlin.math.log
 
 
 object Settings {
@@ -195,5 +196,25 @@ object Settings {
                 }
             }
         )
+    }
+
+    fun spoofPhoneStatusAsOfficial(loadPackageParam: LoadPackageParam) {
+        if (loadPackageParam.processName != Package.SETTINGS) return
+        try {
+            findAndHookMethod(
+                "com.samsung.android.settings.deviceinfo.SecDeviceInfoUtils",
+                loadPackageParam.classLoader,
+                "isPhoneStatusUnlocked",
+                returnConstant(false)
+            )
+            findAndHookMethod(
+                "com.samsung.android.settings.deviceinfo.SecDeviceInfoUtils",
+                loadPackageParam.classLoader,
+                "checkRootingCondition",
+                returnConstant(false)
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
     }
 }

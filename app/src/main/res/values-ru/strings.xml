@@ -107,6 +107,8 @@
     <string name="isOpStyleCHN_title">Журнал вызовов в китайском стиле</string>
     <string name="supportAutoPowerOnOff_title">Автоматическое включение и выключение</string>
     <string name="supportAutoPowerOnOff_summary">Настройки -> Общие настройки -> Сброс -> Автоматическое вкл./выкл.</string>
+    <string name="spoofPhoneStatusAsOfficial_title">Показывать состояние телефона как официальное</string>
+    <string name="spoofPhoneStatusAsOfficial_summary">Настройки -> Сведения о телефоне -> Сведения о состоянии</string>
     <string name="noAIWatermark_title">Отключить ИИ-водяной знак в фоторедакторе</string>
     <string name="bypassHealthMonitorCountryCheck_title">Обход проверки региона в Samsung Health Monitor</string>
     <string name="bypassHealthMonitorCountryCheck_summary">Разрешить использование Health Monitor в неподдерживаемых странах</string>

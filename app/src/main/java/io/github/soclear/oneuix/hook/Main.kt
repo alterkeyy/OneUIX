@@ -195,6 +195,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.settings.supportAutoPowerOnOff) {
                     Settings.supportAutoPowerOnOff(lpparam)
                 }
+
+                if (preference.settings.spoofPhoneStatusAsOfficial) {
+                    Settings.spoofPhoneStatusAsOfficial(lpparam)
+                }
             }
 
             Package.STORE -> {

@@ -72,6 +72,13 @@ fun DetailPaneSettings(
             checked = uiState.supportAutoPowerOnOff,
             onCheckedChange = { onEvent(SettingsEvent.SupportAutoPowerOnOff(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.mobile_screensaver),
+            title = stringResource(id = R.string.spoofPhoneStatusAsOfficial_title),
+            summary = stringResource(id = R.string.spoofPhoneStatusAsOfficial_summary),
+            checked = uiState.spoofPhoneStatusAsOfficial,
+            onCheckedChange = { onEvent(SettingsEvent.SpoofPhoneStatusAsOfficial(it)) }
+        )
     }
 }
 
@@ -96,6 +103,9 @@ sealed interface SettingsEvent {
 
     @JvmInline
     value class SupportAutoPowerOnOff(val value: Boolean) : SettingsEvent
+
+    @JvmInline
+    value class SpoofPhoneStatusAsOfficial(val value: Boolean) : SettingsEvent
 }
 
 fun SettingViewModel.onSettingsEvent(event: SettingsEvent) {
@@ -139,6 +149,12 @@ fun SettingViewModel.onSettingsEvent(event: SettingsEvent) {
             is SettingsEvent.SupportAutoPowerOnOff -> preference.copy(
                 settings = preference.settings.copy(
                     supportAutoPowerOnOff = event.value
+                )
+            )
+
+            is SettingsEvent.SpoofPhoneStatusAsOfficial -> preference.copy(
+                settings = preference.settings.copy(
+                    spoofPhoneStatusAsOfficial = event.value
                 )
             )
         }

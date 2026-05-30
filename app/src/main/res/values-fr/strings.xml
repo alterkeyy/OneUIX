@@ -107,6 +107,8 @@
     <string name="isOpStyleCHN_title">Historique des appels (Style Chine continentale)</string>
     <string name="supportAutoPowerOnOff_title">Prendre en charge l\'allumage/l\'extinction automatique</string>
     <string name="supportAutoPowerOnOff_summary">Paramètres -> Réinitialisation -> Allumage/extinction automatique</string>
+    <string name="spoofPhoneStatusAsOfficial_title">Afficher l\'état du téléphone comme officiel</string>
+    <string name="spoofPhoneStatusAsOfficial_summary">Paramètres -> À propos du téléphone -> Informations sur l\'état</string>
     <string name="noAIWatermark_title">Désactiver le filigrane IA de l\'éditeur de photos</string>
     <string name="bypassHealthMonitorCountryCheck_title">Contourner la vérification de pays Samsung Health Monitor</string>
     <string name="bypassHealthMonitorCountryCheck_summary">Utiliser Health Monitor dans les pays non pris en charge</string>

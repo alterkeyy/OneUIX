@@ -107,6 +107,8 @@
     <string name="isOpStyleCHN_title">中国大陆样式的通话记录</string>
     <string name="supportAutoPowerOnOff_title">支持自动开/关机</string>
     <string name="supportAutoPowerOnOff_summary">设置->重置->自动开/关机</string>
+    <string name="spoofPhoneStatusAsOfficial_title">伪装手机状态为官方</string>
+    <string name="spoofPhoneStatusAsOfficial_summary">设置->关于手机->状态信息</string>
     <string name="noAIWatermark_title">禁用图片编辑器 AI 水印</string>
     <string name="bypassHealthMonitorCountryCheck_title">绕过 Samsung Health Monitor 国家检查</string>
     <string name="bypassHealthMonitorCountryCheck_summary">在不支持的国家/地区使用 Health Monitor</string>
