@@ -205,6 +205,12 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 }
             }
 
+            Package.SM_CN -> {
+                if (preference.settings.spoofPhoneStatusAsOfficial) {
+                    SMCN.spoofPhoneStatusAsOfficial(lpparam)
+                }
+            }
+
             Package.STORE -> {
                 if (preference.other.blockGalaxyStoreAds) {
                     GalaxyStore.blockGalaxyStoreAds(lpparam)

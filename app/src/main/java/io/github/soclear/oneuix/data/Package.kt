@@ -16,11 +16,12 @@ object Package {
     const val NOTES = "com.samsung.android.app.notes"
     const val PHOTO_RETOUCHING = "com.sec.android.mimage.photoretouching"
     const val SETTINGS = "com.android.settings"
+    const val SM_CN = "com.samsung.android.sm_cn"
     const val STORE = "com.sec.android.app.samsungapps"
     const val SYSTEMUI = "com.android.systemui"
     const val TELEPHONYUI = "com.samsung.android.app.telephonyui"
     const val THEME_CENTER = "com.samsung.android.themecenter"
+    const val WATCH_MANAGER = "com.samsung.android.app.watchmanager"
     const val WEATHER = "com.sec.android.daemonapp"
     const val VIDEO = "com.samsung.android.video"
-    const val WATCH_MANAGER = "com.samsung.android.app.watchmanager"
 }
