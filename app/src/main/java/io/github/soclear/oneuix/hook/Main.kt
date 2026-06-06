@@ -384,6 +384,16 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.systemUI.other.disableNotificationGrouping) {
                     SystemUI.disableNotificationGrouping(lpparam)
                 }
+                if (preference.systemUI.other.hideOngoingActivityMedia) {
+                    SystemUI.hideOngoingActivityMedia(
+                        lpparam,
+                        preference.systemUI.other.hideOngoingActivityMediaPackages
+                            .split(",")
+                            .map { it.trim() }
+                            .filter { it.isNotEmpty() }
+                            .toSet()
+                    )
+                }
                 if (preference.systemUI.other.customPowerMenu) {
                     addAssetPath(modulePath)
                     PowerMenu.hookPowerMenuActions(

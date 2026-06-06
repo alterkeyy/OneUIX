@@ -1182,6 +1182,34 @@ object SystemUI {
         }
     }
 
+    fun hideOngoingActivityMedia(loadPackageParam: LoadPackageParam, packages: Set<String>) {
+        if (loadPackageParam.packageName != Package.SYSTEMUI || packages.isEmpty()) return
+        try {
+            findAndHookMethod(
+                "com.android.systemui.media.controls.domain.pipeline.LegacyMediaDataManagerImpl",
+                loadPackageParam.classLoader,
+                "onNotificationAdded",
+                String::class.java,
+                "android.service.notification.StatusBarNotification",
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        try {
+                            val sbn = param.args[1] ?: return
+                            val packageName = callMethod(sbn, "getPackageName") as String
+                            if (packageName in packages) {
+                                param.result = null
+                            }
+                        } catch (t: Throwable) {
+                            XposedBridge.log(t)
+                        }
+                    }
+                }
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
     fun setCustomCarrierName(loadPackageParam: LoadPackageParam, carrierName: String) {
         if (loadPackageParam.packageName != Package.SYSTEMUI) return
         try {

@@ -63,6 +63,9 @@
     <string name="disableScreenshotCaptureSound_title">Disable screenshot sound</string>
     <string name="disableNotificationGrouping_title">Disable notification grouping</string>
     <string name="disableNotificationGrouping_summary">Prevent status bar icon merging and notification center grouping for same-app notifications</string>
+    <string name="hideOngoingActivityMedia_title">Hide ongoing activity for media apps</string>
+    <string name="hideOngoingActivityMedia_summary">Hide the ongoing activity chip in status bar and media notification card in notification shade when playing music in the background</string>
+    <string name="hideOngoingActivityMedia_packages_hint">Package names, separated by commas</string>
     <string name="customPowerMenu_title">Customize power menu actions</string>
     <string name="powerMenuActionVisible_summary">Visible, position %1$d</string>
     <string name="powerMenuActionHidden_summary">Hidden</string>

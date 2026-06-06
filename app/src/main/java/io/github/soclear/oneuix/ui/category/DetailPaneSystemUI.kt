@@ -37,8 +37,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.soclear.oneuix.R
 import io.github.soclear.oneuix.data.ONE_UI_VERSION
-import io.github.soclear.oneuix.data.Preference
 import io.github.soclear.oneuix.data.PowerMenuAction
+import io.github.soclear.oneuix.data.Preference
 import io.github.soclear.oneuix.ui.SettingViewModel
 import io.github.soclear.oneuix.ui.component.SelectItem
 import io.github.soclear.oneuix.ui.component.SwitchItem
@@ -729,6 +729,54 @@ fun DetailPaneSystemUI(
                 onEvent(SystemUIEvent.Other.DisableScreenshotCaptureSound(it))
             }
         )
+        Column {
+            var expanded by rememberSaveable { mutableStateOf(false) }
+            SwitchItem(
+                icon = ImageVector.vectorResource(id = R.drawable.music_note),
+                title = stringResource(id = R.string.hideOngoingActivityMedia_title),
+                summary = if (uiState.other.hideOngoingActivityMedia && uiState.other.hideOngoingActivityMediaPackages.isNotEmpty()) {
+                    uiState.other.hideOngoingActivityMediaPackages
+                } else {
+                    stringResource(id = R.string.hideOngoingActivityMedia_summary)
+                },
+                clickable = true,
+                onClick = { expanded = !expanded },
+                checked = uiState.other.hideOngoingActivityMedia,
+                onCheckedChange = {
+                    if (it && uiState.other.hideOngoingActivityMediaPackages.isEmpty()) {
+                        expanded = true
+                    } else if (!it) {
+                        expanded = false
+                    }
+                    onEvent(SystemUIEvent.Other.HideOngoingActivityMedia(it))
+                }
+            )
+            AnimatedVisibility(expanded && uiState.other.hideOngoingActivityMedia) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    var tempPackages by remember {
+                        mutableStateOf(uiState.other.hideOngoingActivityMediaPackages)
+                    }
+                    OutlinedTextField(
+                        value = tempPackages,
+                        onValueChange = { tempPackages = it },
+                        modifier = Modifier.weight(1f),
+                        label = { Text(text = stringResource(id = R.string.hideOngoingActivityMedia_packages_hint)) },
+                        singleLine = true,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(
+                        onClick = {
+                            onEvent(SystemUIEvent.Other.HideOngoingActivityMediaPackages(tempPackages))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.confirm))
+                    }
+                }
+            }
+        }
         SwitchItem(
             icon = ImageVector.vectorResource(id = R.drawable.notifications),
             title = stringResource(id = R.string.disableNotificationGrouping_title),
@@ -831,7 +879,6 @@ private fun powerMenuActionTitle(actionName: String): Int = when (actionName) {
     PowerMenuAction.RESTART_DOWNLOAD -> R.string.restartDownload
     else -> R.string.other
 }
-
 
 sealed interface SystemUIEvent {
     sealed interface StatusBar : SystemUIEvent {
@@ -987,6 +1034,12 @@ sealed interface SystemUIEvent {
 
         @JvmInline
         value class DisableNotificationGrouping(val value: Boolean) : Other
+
+        @JvmInline
+        value class HideOngoingActivityMedia(val value: Boolean) : Other
+
+        @JvmInline
+        value class HideOngoingActivityMediaPackages(val value: String) : Other
     }
 }
 
@@ -1509,6 +1562,26 @@ private fun SettingViewModel.onOtherEvent(event: SystemUIEvent.Other) {
                     systemUI = preference.systemUI.copy(
                         other = preference.systemUI.other.copy(
                             disableNotificationGrouping = event.value
+                        )
+                    )
+                )
+            }
+
+            is SystemUIEvent.Other.HideOngoingActivityMedia -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        other = preference.systemUI.other.copy(
+                            hideOngoingActivityMedia = event.value
+                        )
+                    )
+                )
+            }
+
+            is SystemUIEvent.Other.HideOngoingActivityMediaPackages -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        other = preference.systemUI.other.copy(
+                            hideOngoingActivityMediaPackages = event.value
                         )
                     )
                 )
