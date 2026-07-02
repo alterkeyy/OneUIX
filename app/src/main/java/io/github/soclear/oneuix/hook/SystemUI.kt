@@ -43,10 +43,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.ONE_UI_VERSION
 import io.github.soclear.oneuix.data.Package
 import io.github.soclear.oneuix.hook.util.TraditionalChineseCalendar
-import io.github.soclear.oneuix.hook.util.xlog
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Collections
 import kotlin.math.roundToInt
 
 
@@ -1176,6 +1174,36 @@ object SystemUI {
                 loadPackageParam.classLoader,
                 "isGroup",
                 returnConstant(false)
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+        // isGroup()=false lets children show individually, but the group summary
+        // (FLAG_GROUP_SUMMARY) leaks through as a standalone entry whose dismissal
+        // clears all of the app's notifications. Filter it out of the shade list
+        // while keeping it in NotifCollection so lifecycle events stay consistent.
+        try {
+            findAndHookMethod(
+                "com.android.systemui.statusbar.notification.collection.ShadeListBuilder",
+                loadPackageParam.classLoader,
+                "applyFilters",
+                "com.android.systemui.statusbar.notification.collection.NotificationEntry",
+                Long::class.javaPrimitiveType,
+                List::class.java,
+                object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        try {
+                            val entry = param.args[0] ?: return
+                            val sbn = getObjectField(entry, "mSbn") ?: return
+                            val notification = callMethod(sbn, "getNotification") ?: return
+                            if (callMethod(notification, "isGroupSummary") as Boolean) {
+                                param.result = true
+                            }
+                        } catch (t: Throwable) {
+                            XposedBridge.log(t)
+                        }
+                    }
+                }
             )
         } catch (t: Throwable) {
             XposedBridge.log(t)
