@@ -151,4 +151,7 @@
     <string name="liftFcmNetworkLimit_title">Lever la limite réseau FCM</string>
     <string name="liftFcmNetworkLimit_summary">Supprimer la restriction du firmware Chine (y compris Hong Kong) qui limite l\'accès réseau des notifications GMS/FCM</string>
     <string name="disableScreenWakeOnPowerUnplugged_title">Garder l\'écran éteint au débranchement</string>
+    <string name="backup_config">Sauvegarder la config</string>
+    <string name="restore_config">Restaurer la config</string>
+    <string name="restore_failed">Échec de la restauration, le fichier est peut-être corrompu</string>
 </resources>

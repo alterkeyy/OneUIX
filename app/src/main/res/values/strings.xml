@@ -151,4 +151,7 @@
     <string name="liftFcmNetworkLimit_title">Lift FCM network limit</string>
     <string name="liftFcmNetworkLimit_summary">Remove the China (including Hong Kong) firmware restriction that throttles GMS/FCM push network access</string>
     <string name="disableScreenWakeOnPowerUnplugged_title">Keep screen off when unplugged</string>
+    <string name="backup_config">Back up config</string>
+    <string name="restore_config">Restore config</string>
+    <string name="restore_failed">Restore failed, the file may be corrupted</string>
 </resources>

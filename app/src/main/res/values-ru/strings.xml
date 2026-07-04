@@ -151,4 +151,7 @@
     <string name="liftFcmNetworkLimit_title">Снять ограничение сети FCM</string>
     <string name="liftFcmNetworkLimit_summary">Убрать ограничение прошивки Китая (включая Гонконг), блокирующее сетевой доступ push GMS/FCM</string>
     <string name="disableScreenWakeOnPowerUnplugged_title">Не включать экран при отключении зарядки</string>
+    <string name="backup_config">Резервное копирование</string>
+    <string name="restore_config">Восстановить конфиг</string>
+    <string name="restore_failed">Ошибка восстановления, файл может быть повреждён</string>
 </resources>

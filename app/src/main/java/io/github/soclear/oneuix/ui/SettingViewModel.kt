@@ -10,14 +10,19 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import io.github.soclear.oneuix.R
+import io.github.soclear.oneuix.data.IgnoreUnknownKeysJson
 import io.github.soclear.oneuix.data.Preference
 import io.github.soclear.oneuix.ui.category.Category
 import io.github.soclear.oneuix.ui.category.CategoryAppInfo
+import java.io.InputStream
+import java.io.OutputStream
 
 class SettingViewModel(application: Application) : ViewModel() {
     val categoryAppInfoList: StateFlow<List<CategoryAppInfo>> = flow {
@@ -51,5 +56,20 @@ class SettingViewModel(application: Application) : ViewModel() {
                 nextPreference(it)
             }
         }
+    }
+
+    suspend fun backupTo(output: OutputStream) = withContext(Dispatchers.IO) {
+        output.write(
+            IgnoreUnknownKeysJson.encodeToString(
+                Preference.serializer(), dataStore.data.first()
+            ).encodeToByteArray()
+        )
+    }
+
+    suspend fun restoreFrom(input: InputStream) = withContext(Dispatchers.IO) {
+        val restored = IgnoreUnknownKeysJson.decodeFromString(
+            Preference.serializer(), input.readBytes().decodeToString()
+        )
+        dataStore.updateData { restored }
     }
 }
